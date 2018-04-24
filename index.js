@@ -20,7 +20,7 @@ console.log("starting server");
 Realm.Sync.User.login(
     `http://${config.realmHost}:${config.realmPort}`,
     config.realmUser,
-    config.realmPasssword
+    config.realmPassword
 ).then(user => {
     console.log("realm user connect");
     return Realm.open({
