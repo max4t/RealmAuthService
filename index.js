@@ -27,8 +27,12 @@ Realm.Sync.User.login(
         user: user,
         url: `realm://${config.realmPath}`
     });
+}).catch(err => {
+    console.error("failed to auth to realm with", config.realmUser, config.realmPassword);
+    console.error("==> ERROR :", err);
+    process.exit(1);
 }).then(realm => {
-    console.log("realm on");
+    console.log("connected to realm");
 
     let server = restify.createServer();
     server.use(restify.plugins.bodyParser());
@@ -52,5 +56,8 @@ Realm.Sync.User.login(
     server.listen(8080, () => {
         console.log("server listening on 8080");
     });
-
+}).catch(err => {
+    console.error("failed to connect to realm");
+    console.error("==> ERROR :", err);
+    process.exit(1);
 });
