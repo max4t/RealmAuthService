@@ -1,0 +1,12 @@
+{
+    "name": "realm_auth_service",
+    "description": "Auth microservice based on Realm (test)",
+    "main": "./index.js",
+    "version": "0.0.1",
+    "author": "Maxime TM",
+    "dependencies": {
+        "realm": "*",
+        "bcrypt": "*",
+        "restify": "*"
+    }
+}
