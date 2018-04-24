@@ -25,7 +25,7 @@ Realm.Sync.User.login(
     console.log("realm user connect");
     return Realm.open({
         user: user,
-        url: `realm://${config.realPath}`
+        url: `realm://${config.realmPath}`
     });
 }).then(realm => {
     console.log("realm on");
