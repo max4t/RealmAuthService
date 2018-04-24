@@ -8,5 +8,8 @@
         "realm": "*",
         "bcrypt": "*",
         "restify": "*"
+    },
+    "scripts": {
+        "start": "node ./index.js"
     }
 }
