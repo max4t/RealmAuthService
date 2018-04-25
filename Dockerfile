@@ -8,7 +8,7 @@ RUN apk add --no-cache libc6-compat \
     && npm install \
     && apk del .build-deps
 
-COPY index.js config.js route.js ./
+COPY index.js config.js route.js realm.js ./
 
 USER node
 
