@@ -12,9 +12,14 @@ class InvalidUserError extends Error {
 
 function authHandler(realm)  {
     return (req, res, next) => {
-        let email = req.body.email;
-        let password = req.body.password;
-        let users = realm.objects('User').filtered(`email = "${email}"`);
+        if (!("body" in req) || !("email" in req.body) || !("password" in req.body)) {
+            // change to invalid parameter
+            return next(new InvalidUserError());
+        }
+        const email = req.body.email;
+        const password = req.body.password;
+        const users = realm.objects('User').filtered(`email = "${email}"`);
+        console.log("USERS", users);
         if (users.length != 1) {
             return next(new InvalidUserError());
         }
