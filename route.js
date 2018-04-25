@@ -1,5 +1,15 @@
 let bcrypt = require("bcrypt");
 
+class InvalidUserError extends Error {
+    constructor() {
+        super({error: "invalid credentials"});
+    }
+
+    get statusCode() {
+        return 403;
+    }
+}
+
 function authHandler(realm)  {
     return (req, res, next) => {
         let email = req.body.email;

@@ -6,15 +6,6 @@ let routes = require("./route");
 let restify = require('restify');
 let Realm = require('realm');
 
-class InvalidUserError extends Error {
-    constructor() {
-        super({error: "invalid credentials"});
-    }
-
-    get statusCode() {
-        return 403;
-    }
-}
 
 console.log("starting server");
 
