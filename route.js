@@ -1,6 +1,6 @@
 let bcrypt = require("bcrypt");
 
-function autHandler(realm)  {
+function authHandler(realm)  {
     return (req, res, next) => {
         let email = req.body.email;
         let password = req.body.password;
