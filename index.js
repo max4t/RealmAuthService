@@ -1,36 +1,25 @@
 let config = require("./config");
 config();
 
-let routes = require("./route");
 let realm = require("./realm");
+let usecase = require("./usecase");
+let restify = require('./api');
 
-let restify = require('restify');
+const log = console.log.bind(console)
 
-console.log("starting server");
-
-realm.connect(
-    `http://${config.realmHost}:${config.realmPort}`,
-    config.realmUser,
-    config.realmPassword,
-    `realm://${config.realmHost}:${config.realmPort}${config.realmPath}`
-).then(db => {
-    console.log("connected to realm");
-
-    let server = restify.createServer();
-    server.use(restify.plugins.bodyParser());
-    
-    // register routes from ./route.js
-    for (const [_, params] of Object.entries(routes)) {
-        server[params.method](params.path, params.handler(db));
-        console.log("Registered", params.method.toUpperCase(), params.path);
-    }
-    
-    server.listen(8080, () => {
-        console.log("server listening on 8080");
+async function main() {
+    let db = await realm({
+        url: `http://${config.realmHost}:${config.realmPort}`,
+        user: config.realmUser,
+        password: config.realmPassword,
+        realm: `realm://${config.realmHost}:${config.realmPort}${config.realmPath}`,
+        log: log
     });
-}).catch(err => {
-    realm.disconnect();
-    console.error("exited unexpectedly");
-    console.error("==> ERROR :", err);
+    let core = await usecase({log: log}, db);
+    await restify({port: 8080, log: log}, core);
+}
+
+main().catch(err => {
+    log("EXITING");
     process.exit(1);
 });
