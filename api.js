@@ -15,19 +15,23 @@ module.exports = async (config, core) => {
     server.use(restify.plugins.bodyParser());
 
     config.log("registering routes");
-    server.post("/auth", async (req, res, next) => {
+    server.post("/auth", (req, res, next) => {
         if (!("body" in req) || !("email" in req.body) || !("password" in req.body)) {
             // change to invalid parameter
             config.log("invalid request");
             return next(new InvalidUserError());
         }
-        let id = await core.login(req.body.email, req.body.password);
-        if (id === false) {
-            config.log("invalid credentials");
-            return next(new InvalidUserError());
-        }
-        res.send(200, {id: id});
-        config.log("valid user");
+        core.login(req.body.email, req.body.password).then(id => {
+            if (id === false) {
+                config.log("invalid credentials");
+                return next(new InvalidUserError());
+            }
+            res.send(200, {id: id});
+            config.log("valid user");
+        }).catch(err => {
+            config.log("res error", err);
+            res.send(500);
+        });
     });
 
     server.listen(config.port, () => {
