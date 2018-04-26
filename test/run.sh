@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
-for f in $(ls *.js); do
+for f in $(ls "$(dirname "$0")"/*.js); do
+    echo "=> $f"
     node "$f"
 done
