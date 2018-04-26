@@ -1,3 +1,6 @@
+// This module returns a function like this : (config) => Promise<Repo>
+// Repo is the interface used by the usecase to fetch the data
+
 let Realm = require("realm");
 
 const UserSchema = {
@@ -42,10 +45,13 @@ module.exports = async (config) => {
     const user = await Realm.Sync.User.login(c.url, c.user, c.password);
     c.log("user authenticated to realm");
     const r = await Realm.open({
+        //schema: [UserSchema],
         sync: {
             user: user,
             url: c.realm,
-            error: err => { throw err; }
+            error: err => {
+                c.log("realm error:", err);
+            }
         }
     });
     c.log("realm connected");

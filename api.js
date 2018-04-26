@@ -1,3 +1,5 @@
+// returns an async function that launchs the server on 'config.port'
+
 let restify = require("restify");
 
 class InvalidUserError extends Error {

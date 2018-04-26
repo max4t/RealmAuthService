@@ -1,3 +1,6 @@
+// returns an async function which returns a interface UseCase
+// only one usecase 'login'. returns false if invalid credentials or the user id. forward errors from the db if any
+
 let bcrypt = require("bcrypt");
 
 class UseCase {
