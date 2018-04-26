@@ -20,6 +20,6 @@ async function main() {
 }
 
 main().catch(err => {
-    log("EXITING");
+    log("EXITING with", err);
     process.exit(1);
 });
