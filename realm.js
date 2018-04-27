@@ -4,9 +4,10 @@
 let Realm = require("realm");
 
 const UserSchema = {
-    name: "User",
+    name: 'Users',
+    primaryKey: 'userId',
     properties: {
-        id: 'int',
+        userId: 'string',
         email: 'string',
         password: 'string'
     }
@@ -35,7 +36,13 @@ class Repo {
 
     async findByEmail(email) {
         this.log(`Repo.findByEmail(${email})`);
-        return this.realm.objects('User').filtered(`email = "${email}"`);
+        return this.realm.objects('Users').filtered(`email = "${email}"`).map(u => {
+            return {
+                id: u.userId,
+                email: u.email,
+                password: u.password
+            };
+        });
     }
 }
 
@@ -45,7 +52,7 @@ module.exports = async (config) => {
     const user = await Realm.Sync.User.login(c.url, c.user, c.password);
     c.log("user authenticated to realm");
     const r = await Realm.open({
-        //schema: [UserSchema],
+        schema: [UserSchema],
         sync: {
             user: user,
             url: c.realm,
